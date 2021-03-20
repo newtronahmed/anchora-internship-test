@@ -32,7 +32,12 @@ const Items = () => {
     return (
         <div className='container'>
            <Header active='items' />  
+           <div className='w-25 mx-auto mt-4'>
+           <Link to='/items/create' className='btn btn-outline-success block w-100  '>Add Item</Link>
+           </div>
+          
             <div className="row mt-4 p-4">
+              
               {
                 items.map(({title,id,image,price})=>(
                   <div className="col-md-4 mb-4" key={id}>

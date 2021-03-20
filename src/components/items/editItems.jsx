@@ -11,27 +11,60 @@ const EditItems = ({history}) => {
     const [ item,setItem] = useState({})
     const [categories,setCategories] = useState([])
     const {id} = useParams('id')
+
+    const [file , setFile] = useState(undefined)
     const onSubmit =(data)=>{
-        axios.put(BASE_URL+'/items/' + id).then(response=>{
-            console.log(response.data)
-            if(response.status ===200){
-                history.push('/')
+        if(file){
+            const config = {
+                headers: {'Content-Type' :'multipart/form-data'}
             }
+            // console.log(file)
+            const fileFormData = new FormData()
+        fileFormData.append('file',file)
+        fileFormData.append('name',file.name)
+         axios.put(BASE_URL+'/upload',fileFormData,config).then(response=>{
+            //  console.log(response.data)
+            //Link array is empty
+             axios.put(BASE_URL+'/items'+id,{...data,image:file.name})
+             .then(response=>{
+            //something is wrong
+            console.log(response)
+             history.push('/')
+            }).catch(err=>{
+            console.log(err)
+             })
         }).catch(err=>{
             console.log(err)
-        })
+            })
+        }else {
+            axios.put(BASE_URL+'/items/'+id ,{...data,image:item.image})
+             .then(response=>{
+            //something is wrong
+            console.log(response)
+             history.push('/')
+            }).catch(err=>{
+            console.log(err)
+             })
+        }
+    // console.log(rest)
+           
+        
+        
 
     }
+ 
     useEffect(() => {
         const getCategories = ()=>{
             axios.get(BASE_URL+'/categories').then(response=>{
                 // console.log(response.data)
                 setCategories([...response.data.data])
+            }).catch(err=>{
+                console.log(err.message)
             })
         }
         getCategories()
     }, [])
-    const {register, handleSubmit,reset} = useForm({defaultValues:{title:item.title, category:item.category?.id, price: item.price, description:item.description , image:item.image}})
+    const {register, handleSubmit,reset} = useForm()
     useEffect(() => {
         const getItemsById = (id) =>{
             axios.get(BASE_URL+'/items/'+ id).then(response=>{
@@ -67,11 +100,11 @@ const EditItems = ({history}) => {
             </div>
             <div className='form-group'>
               <label htmlFor='image' >Image</label>
-              <input type="text" name='image'  id='image' ref={register} className='form-control'/>
+              <input type="file" name='file'  id='image' onChange={(e)=>setFile(e.target.files[0])} className='form-control'/>
             </div>
             <div className='form-group'>
               <label htmlFor="category">Category</label>
-              <select className='form-control' ref={register} name="category" id="category">
+              <select className='form-control' value={item.category?.id} ref={register} name="category" id="category">
                 {/* <option value="1">vehicle</option> */}
                 {
                     categories.map(({name,id})=>(<option value={id} key={id}>{name}</option>))
@@ -80,8 +113,8 @@ const EditItems = ({history}) => {
             </div>
         </div>
         <div>
-        <button className='btn btn-success inline-block mx-2'>submit</button>
-          <button className='btn btn-outline-primary inline-block mx-2' onClick={()=>history.goBack()}>Go back</button>
+        <button className='btn btn-outline-success inline-block mx-2'>submit</button>
+        <button className='btn btn-outline-primary inline-block mx-2' onClick={()=>history.push('/')}>Go back</button>
         </div>
         </form>
         </div>

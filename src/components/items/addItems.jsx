@@ -77,7 +77,7 @@ fileFormData.append('name',file.name)
         </div>
         <div >
           <button className='btn btn-success inline-block mx-2'>submit</button>
-          <button className='btn btn-outline-primary inline-block mx-2' onClick={()=>history.goBack()}>Go back</button>
+          <button className='btn btn-outline-primary inline-block mx-2' onClick={()=>history.push('/')}>Go back</button>
         </div>
         </form>
         </div>

@@ -37,13 +37,16 @@ const Categories = ({history}) => {
     return (
         <div className='container'>
             <Header active='categories' />
+            <div className='w-25 mx-auto mt-4'>
+            <button className='btn btn-sm btn-outline-success w-100 p-2 ' onClick={()=>setAddModal(true)}>Add to Categories</button>
+           </div>
             <table className='table table-bordered mt-4'>
                 <thead className='thead-light'>
                     <tr>
                         <th>
                             <div className='d-flex justify-content-between align-items-center'>
                                 <div>#Categories</div>
-                                <button className='btn btn-sm btn-outline-success  mx-2' onClick={()=>setAddModal(true)}>Add to Categories</button>
+                               
                             </div>
                         </th>
                         <th>Actions</th>   

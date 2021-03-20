@@ -1,6 +1,5 @@
 import React,{ useState} from 'react'
 import { Modal } from 'react-bootstrap'
-
 import axios from 'axios'
 const BASE_URL = 'https://test.anchoratechs.com'
 const AddCategory = ({show,hide,setCategories , history}) => {
